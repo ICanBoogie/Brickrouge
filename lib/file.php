@@ -74,46 +74,43 @@ class File extends Element
 
 	protected function details($path)
 	{
-		$file = basename($path);
+		$basename = basename($path);
 
-		if (strlen($file) > 40)
-		{
-			$file = substr($file, 0, 16) . '…' . substr($file, -16, 16);
-		}
-
-		$rc[] = '<span title="Path: ' . $path . '">' . $file . '</span>';
-		$rc[] = Uploaded::getMIME(DOCUMENT_ROOT . $path);
-		$rc[] = format_size(filesize(DOCUMENT_ROOT . $path));
+		$rc[] = '<span title="' . $basename . '">' . \ICanBoogie\shorten($basename, 40) . '</span>';
+		$rc[] = Uploaded::getMIME($path);
+		$rc[] = format_size(filesize($path));
 
 		return $rc;
 	}
 
 	protected function preview($path)
 	{
-		$rc = '<a class="download" href="' . $path . '">' . t('download', array(), array('scope' => array('fileupload', 'element'))) . '</a>';
-
-		return $rc;
+		return '<a class="download" href="' . $path . '">'
+		. t('download', array(), array('scope' => 'fileupload.element'))
+		. '</a>';
 	}
 
 	protected function render_inner_html()
 	{
+		$name = $this['name'];
 		$path = $this['value'];
 
-		$rc = new Text
-		(
-			array
-			(
-				'value' => $this['value'],
-				'readonly' => true,
-				'name' => $this['name'],
-				'class' => 'reminder'
-			)
-		)
+		$rc = $this->render_reminder($name, $path)
 
 		. ' <div class="alert alert-error undissmisable"></div>'
 		. ' <label class="btn trigger"><i class="icon-file"></i> '
 		. t($this[self::BUTTON_LABEL], array(), array('scope' => 'button'))
-		. '<input type="file" /></label>';
+
+		. new Element
+		(
+			'input', array
+			(
+				'type' => "file",
+				'name' => $this[self::T_UPLOAD_URL] ? null : $name
+			)
+		)
+
+		. '</label>';
 
 		#
 		# uploading element
@@ -140,7 +137,7 @@ class File extends Element
 
 			$limit = format_size($limit * 1024);
 
-			$rc .= PHP_EOL . '<div class="file-size-limit small" style="margin-top: .5em">';
+			$rc .= PHP_EOL . '<div class="file-size-limit help-block" style="margin-top: .5em">';
 			$rc .= t('The maximum file size must be less than :size.', array(':size' => $limit));
 			$rc .= '</div>';
 		}
@@ -153,7 +150,7 @@ class File extends Element
 
 		if ($path)
 		{
-			if (!is_file(DOCUMENT_ROOT . $path))
+			if (!is_file($path))
 			{
 				$infos = '<span class="warn">' . t('The file %file is missing !', array('%file' => basename($path))) . '</span>';
 			}
@@ -173,6 +170,20 @@ class File extends Element
 EOT;
 	}
 
+	protected function render_reminder($name, $value)
+	{
+		return new Text
+		(
+			array
+			(
+				'value' => $value,
+				'readonly' => true,
+				'name' => $name,
+				'class' => 'reminder'
+			)
+		);
+	}
+
 	protected function alter_dataset(array $dataset)
 	{
 		$limit = $this[self::FILE_WITH_LIMIT] ?: 2 * 1024;
@@ -185,19 +196,8 @@ EOT;
 		return parent::alter_dataset($dataset) + array
 		(
 			'name' => $this['name'],
-			'max-file-size' => $limit * 1024
+			'max-file-size' => $limit * 1024,
+			'upload-url' => $this[self::T_UPLOAD_URL]
 		);
-	}
-
-	protected function render_outer_html()
-	{
-		$upload_url = $this[self::T_UPLOAD_URL];
-
-		if ($upload_url)
-		{
-			$this->dataset['upload-url'] = $upload_url;
-		}
-
-		return parent::render_outer_html();
 	}
 }
