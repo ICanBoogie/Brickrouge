@@ -1,5 +1,5 @@
 BRICKROUGE = ./assets/brickrouge
-BRICKROUGE_LESS = ./lib/brickrouge.less
+BRICKROUGE_LESS = ./lib/Brickrouge.less
 BRICKROUGE_UNCOMPRESSED = ./assets/brickrouge-uncompressed
 BRICKROUGE_RESPONSIVE_LESS = ./lib/responsive.less
 BRICKROUGE_RESPONSIVE = ./assets/responsive
@@ -10,41 +10,41 @@ BRICKROUGE_LITE_TMP = '/tmp/brickrouge-lite/'
 BRICKROUGE_LITE_LESS = ${BRICKROUGE_LITE_TMP}brickrouge.less
 
 JS_COMPRESSOR = curl -X POST -s --data-urlencode 'js_code@$^' --data-urlencode 'utf8=1' http://marijnhaverbeke.nl/uglifyjs
-#JS_COMPRESSOR = cat $^ # uncomment to create un compressed files
+#JS_COMPRESSOR = cat $^ # uncomment to create uncompressed files
 
 CSS_COMPILER ?= `which lessc`
 CSS_COMPRESSOR = curl -X POST -s --data-urlencode 'input@$^' http://cssminifier.com/raw
-#CSS_COMPRESSOR = cat $^ # uncomment to create un compressed files
+#CSS_COMPRESSOR = cat $^ # uncomment to create uncompressed files
 
 WATCHR ?= `which watchr`
 
 # CSS
 
 CSS_FILES = \
-	lib/alerts.less \
-	lib/forms.less \
-	lib/responsive-767px-max.less \
-	lib/brickrouge.less \
-	lib/grid.less \
-	lib/responsive-768px-979px.less \
+	lib/Alert.less \
+	lib/Brickrouge.less \
+	lib/Button.less \
 	lib/button-groups.less \
-	lib/layouts.less \
-	lib/responsive.less \
-	lib/buttons.less \
-	lib/mixins.less \
-	lib/responsive-navbar.less \
-	lib/carousel.less \
-	lib/navs.less \
-	lib/responsive-utilities.less \
+	lib/Carousel.less \
 	lib/close.less \
-	lib/popovers.less \
-	lib/modal.less \
-	lib/searchbox.less \
 	lib/dropdowns.less \
+	lib/Element.less \
+	lib/Form.less \
+	lib/grid.less \
+	lib/layouts.less \
+	lib/mixins.less \
+	lib/Modal.less \
+	lib/navs.less \
+	lib/Popover.less \
 	lib/reset.less \
-	lib/utilities.less \
-	lib/element.less \
+	lib/responsive.less \
 	lib/responsive-1200px-min.less \
+	lib/responsive-767px-max.less \
+	lib/responsive-768px-979px.less \
+	lib/responsive-navbar.less \
+	lib/responsive-utilities.less \
+	lib/Searchbox.less \
+	lib/utilities.less \
 	lib/variables.less
 
 CSS_COMPRESSED = assets/brickrouge.css
@@ -61,16 +61,16 @@ CSS_RESPONSIVE_UNCOMPRESSED = assets/brickrouge-responsive-uncompressed.css
 # JavaScript
 
 JS_FILES = \
-	lib/brickrouge.js \
-	lib/form.js \
-	lib/alerts.js \
+	lib/Brickrouge.js \
+	lib/Form.js \
+	lib/Alert.js \
 	lib/dropdowns.js \
 	lib/navs.js \
-	lib/popover.js \
-	lib/modal.js \
+	lib/Popover.js \
+	lib/Modal.js \
 	lib/tooltip.js \
-	lib/searchbox.js \
-	lib/carousel.js
+	lib/Searchbox.js \
+	lib/Carousel.js
 
 JS_COMPRESSED = assets/brickrouge.js
 JS_UNCOMPRESSED = assets/brickrouge-uncompressed.js
@@ -93,7 +93,7 @@ $(CSS_COMPRESSED): $(CSS_UNCOMPRESSED)
 	$(CSS_COMPRESSOR) >$@
 
 $(CSS_UNCOMPRESSED): $(CSS_FILES)
-	$(CSS_COMPILER) lib/brickrouge.less >$@
+	$(CSS_COMPILER) lib/Brickrouge.less >$@
 
 $(CSS_RESPONSIVE_COMPRESSED): $(CSS_RESPONSIVE_UNCOMPRESSED)
 	$(CSS_COMPRESSOR) >$@
