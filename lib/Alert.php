@@ -24,7 +24,12 @@ class Alert extends Element
 	const CONTEXT = '#alert-context';
 	const CONTEXT_SUCCESS = 'success';
 	const CONTEXT_INFO = 'info';
-	const CONTEXT_ERROR = 'error';
+
+	/**
+	 * @deprecated
+	 */
+	const CONTEXT_ERROR = 'danger';
+	const CONTEXT_DANGER = 'danger';
 
 	/**
 	 * The heading of the alert.
@@ -72,7 +77,7 @@ class Alert extends Element
 
 		parent::__construct('div', $attributes + [
 
-			self::CONTEXT => $message instanceof Errors ? 'error' : null,
+			self::CONTEXT => $message instanceof Errors ? self::CONTEXT_DANGER : null,
 
 			'class' => 'alert'
 

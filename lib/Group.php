@@ -71,7 +71,7 @@ class Group extends Element
 	 */
 	protected function render_child($child)
 	{
-		$control_group_class = 'control-group';
+		$control_group_class = 'control-group form-group';
 
 		$name = $child['name'];
 
@@ -89,10 +89,12 @@ class Group extends Element
 
 		if ($state)
 		{
-			$control_group_class .= ' ' . $state;
+			$control_group_class .= " $state  has-$state";
+			$child = clone $child;
+			$child->add_class("form-control-$state");
 		}
 
-		$label = $child[Form::LABEL];
+		$label = $child[Group::LABEL];
 
 		if ($label)
 		{
@@ -106,7 +108,7 @@ class Group extends Element
 				]);
 			}
 
-			$label = '<label for="' . $child->id . '" class="controls-label">' . $label . '</label>' . PHP_EOL;
+			$label = '<label for="' . $child->id . '" class="controls-label control-label">' . $label . '</label>' . PHP_EOL;
 		}
 
 		return <<<EOT

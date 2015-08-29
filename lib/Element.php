@@ -126,6 +126,10 @@ class Element extends Prototyped implements \ArrayAccess, \IteratorAggregate, HT
 	 * "above". Defaults to "after".
 	 */
 	const LABEL_POSITION = '#label-position';
+	const LABEL_POSITION_BEFORE = 'before';
+	const LABEL_POSITION_AFTER = 'after';
+	const LABEL_POSITION_ABOVE = 'above';
+
 	const LABEL_MISSING = '#label-missing';
 
 	/**
@@ -887,11 +891,11 @@ class Element extends Prototyped implements \ArrayAccess, \IteratorAggregate, HT
 		foreach ($this[self::OPTIONS] as $option_name => $label)
 		{
 			$child[self::LABEL] = $label;
-			$child['name'] = $name . '[' . $option_name . ']';
+			$child['name'] = $name ? $name . '[' . $option_name . ']' : $option_name;
 			$child['checked'] = !empty($selected[$option_name]);
 			$child['disabled'] = $disabled || !empty($disabled_list[$option_name]);
 			$child['data-key'] = $option_name;
-			$child['data-name'] = $name;
+			$child['data-name'] = $name ?: $option_name;
 
 			$html .= $child;
 		}
@@ -1155,6 +1159,12 @@ class Element extends Prototyped implements \ArrayAccess, \IteratorAggregate, HT
 	protected function render_outer_html()
 	{
 		$inner = $this->render_inner_html();
+
+		if ($inner === null && $this->tag_name === 'div')
+		{
+			throw new ElementIsEmpty;
+		}
+
 		$attributes = [];
 		$dataset = [];
 
