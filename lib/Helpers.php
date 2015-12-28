@@ -246,6 +246,7 @@ class Helpers
 	}
 
 	const STORE_KEY = 'brickrouge.stored_forms';
+	const SESSION_FORM_ERRORS = 'brickrouge.form_errors';
 	const STORE_MAX = 10;
 
 	/**
@@ -306,14 +307,14 @@ class Helpers
 		return $form;
 	}
 
-	static private $errors;
-
 	/**
 	 * This method is the fallback for the {@link store_form_errors()} function.
 	 */
 	static private function store_form_errors($name, $errors)
 	{
-		self::$errors[$name] = $errors;
+		check_session();
+
+		$_SESSION[self::SESSION_FORM_ERRORS][$name] = $errors;
 	}
 
 	/**
@@ -321,7 +322,11 @@ class Helpers
 	 */
 	static private function retrieve_form_errors($name)
 	{
-		return isset(self::$errors[$name]) ? self::$errors[$name] : [];
+		check_session();
+
+		return empty($_SESSION[self::SESSION_FORM_ERRORS][$name])
+			? []
+			: $_SESSION[self::SESSION_FORM_ERRORS][$name];
 	}
 
 	/**
