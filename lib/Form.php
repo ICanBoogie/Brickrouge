@@ -148,7 +148,7 @@ class Form extends Element
 		$disabled = $this[self::DISABLED];
 		$errors = $this[self::ERRORS] ?: [];
 
-		if ($values || $disabled || $errors)
+		if ($values || $disabled || count($errors))
 		{
 			if ($values)
 			{
