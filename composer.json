@@ -18,12 +18,13 @@
 		"source": "https://github.com/Brickrouge/Brickrouge"
 	},
 	"require": {
-		"php": ">=5.4.0",
-		"icanboogie/common": "^1.2.2",
-		"icanboogie/prototype": ">=2.2.0",
-		"icanboogie/errors": "^1.0.0"
+		"php": ">=5.5.0",
+		"icanboogie/common": "^1.3",
+		"icanboogie/prototype": "^2.3"
 	},
 	"require-dev": {
+		"icanboogie/errors": "^1.0",
+		"icanboogie/validate": "dev-master",
 		"olvlvl/filecache": "dev-master"
 	},
 	"autoload": {

@@ -206,7 +206,7 @@ EOT;
 
 		foreach ($errors as $error)
 		{
-			if ($error === '')
+			if ((string) $error === '')
 			{
 				continue;
 			}
