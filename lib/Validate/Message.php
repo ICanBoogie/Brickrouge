@@ -18,7 +18,7 @@ use function ICanBoogie\format;
  * @property-read string $format
  * @property-read array $args
  */
-class Message
+class Message implements \JsonSerializable
 {
 	use AccessorTrait;
 
@@ -64,5 +64,13 @@ class Message
 	public function __toString()
 	{
 		return format($this->format, $this->args);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function jsonSerialize()
+	{
+		return (string) $this;
 	}
 }

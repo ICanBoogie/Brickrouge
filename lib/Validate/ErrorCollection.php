@@ -14,7 +14,7 @@ namespace Brickrouge\Validate;
 /**
  * An error collection.
  */
-class ErrorCollection implements ErrorCollectionReader, \ArrayAccess, \IteratorAggregate, \Countable
+class ErrorCollection implements ErrorCollectionReader, \ArrayAccess, \IteratorAggregate, \Countable, \JsonSerializable
 {
 	/**
 	 * Special identifier used when an error is not associated with a specific attribute.
@@ -104,5 +104,13 @@ class ErrorCollection implements ErrorCollectionReader, \ArrayAccess, \IteratorA
 		}
 
 		return $n;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function jsonSerialize()
+	{
+		return $this->collection;
 	}
 }
